@@ -1,0 +1,5 @@
+<Solution>
+  <Project Path="VoorraadWebshop.Api/VoorraadWebshop.Api.csproj" />
+  <Project Path="VoorraadWebshop.Core/VoorraadWebshop.Core.csproj" />
+  <Project Path="VoorraadWebshop.Infrastructure/VoorraadWebshop.Infrastructure.csproj" />
+</Solution>

@@ -1,0 +1,15 @@
+# .NET
+bin/
+obj/
+*.user
+appsettings.Development.json
+
+# React / Node
+node_modules/
+dist/
+*.log
+
+# Editor/OS
+.vs/
+.vscode/
+.DS_Store
