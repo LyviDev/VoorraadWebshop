@@ -6,10 +6,12 @@ namespace VoorraadWebshop.Core.Services;
 public class ProductService : IProductService
 {
     private readonly IProductRepository _repository;
+    private readonly ICategorieRepository _categorieRepository;
 
-    public ProductService(IProductRepository repository)
+    public ProductService(IProductRepository repository, ICategorieRepository categorieRepository)
     {
         _repository = repository;
+        _categorieRepository = categorieRepository;
     }
 
     public async Task<List<Product>> GetAllProductsAsync()
@@ -32,6 +34,12 @@ public class ProductService : IProductService
         if (product.Prijs < 0)
         {
             throw new ArgumentException("Prijs mag niet negatief zijn.");
+        }
+
+        var categorie = await _categorieRepository.GetByIdAsync(product.CategorieId);
+        if (categorie == null)
+        {
+            throw new ArgumentException($"Categorie met ID {product.CategorieId} bestaat niet.");
         }
 
         await _repository.AddAsync(product);
