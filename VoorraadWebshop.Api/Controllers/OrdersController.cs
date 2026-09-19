@@ -47,4 +47,18 @@ public class OrdersController : ControllerBase
             return Conflict(ex.Message);
         }
     }
+
+    [HttpPatch("{id}/status")]
+    public async Task<IActionResult> UpdateStatus(int id, [FromBody] OrderStatus nieuweStatus)
+    {
+        try
+        {
+            await _orderService.UpdateStatusAsync(id, nieuweStatus);
+            return NoContent();
+        }
+        catch (ArgumentException ex)
+        {
+            return NotFound(ex.Message);
+        }
+    }
 }

@@ -1,11 +1,17 @@
 import { useState, useEffect } from 'react';
 
+const STATUS_OPTIES = ['InBehandeling', 'Verzonden', 'Afgeleverd', 'Geannuleerd'];
+
 function OrdersOverzicht({ vernieuwTrigger }) {
     const [orders, setOrders] = useState([]);
     const [laden, setLaden] = useState(true);
     const [foutmelding, setFoutmelding] = useState(null);
 
     useEffect(() => {
+        haalOrdersOp();
+    }, [vernieuwTrigger]);
+
+    function haalOrdersOp() {
         setLaden(true);
         fetch('http://localhost:5070/api/orders')
             .then((response) => {
@@ -22,7 +28,22 @@ function OrdersOverzicht({ vernieuwTrigger }) {
                 setFoutmelding(error.message);
                 setLaden(false);
             });
-    }, [vernieuwTrigger]);
+    }
+
+    function wijzigStatus(orderId, nieuweStatusIndex) {
+        fetch(`http://localhost:5070/api/orders/${orderId}/status`, {
+            method: 'PATCH',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(parseInt(nieuweStatusIndex)),
+        })
+            .then((response) => {
+                if (!response.ok) {
+                    throw new Error('Status kon niet worden bijgewerkt.');
+                }
+                haalOrdersOp();
+            })
+            .catch((error) => setFoutmelding(error.message));
+    }
 
     function berekenTotaal(order) {
         return order.orderRegels.reduce(
@@ -39,19 +60,35 @@ function OrdersOverzicht({ vernieuwTrigger }) {
             <h2>Orders</h2>
             {orders.length === 0 && <p>Nog geen orders geplaatst.</p>}
             {orders.map((order) => (
-                <div key={order.id} style={{ border: '1px solid #ccc', margin: '10px 0', padding: '10px' }}>
-                    <p>
-                        <strong>Order #{order.id}</strong> — Status: {order.status} — Klant: {order.klant?.naam ?? 'Onbekend'}
-                    </p>
-                    <ul>
+                <div key={order.id} className="order-kaart">
+                    <div className="order-kop">
+                        <strong>Order #{order.id}</strong>
+                        <span>Klant: {order.klant?.naam ?? 'Onbekend'}</span>
+                    </div>
+
+                    <div className="veld-groep">
+                        <label>Status:</label>
+                        <select
+                            value={order.status}
+                            onChange={(e) => wijzigStatus(order.id, e.target.value)}
+                        >
+                            {STATUS_OPTIES.map((optie, index) => (
+                                <option key={index} value={index}>
+                                    {optie}
+                                </option>
+                            ))}
+                        </select>
+                    </div>
+
+                    <ul className="item-lijst">
                         {order.orderRegels.map((regel) => (
-                            <li key={regel.id}>
-                                {regel.product?.naam ?? 'Onbekend product'} × {regel.aantal} — €
-                                {(regel.aantal * regel.prijsPerStuk).toFixed(2)}
+                            <li key={regel.id} className="item-rij">
+                                <span>{regel.product?.naam ?? 'Onbekend product'} × {regel.aantal}</span>
+                                <span className="mono">€{(regel.aantal * regel.prijsPerStuk).toFixed(2)}</span>
                             </li>
                         ))}
                     </ul>
-                    <p>
+                    <p className="order-totaal mono">
                         <strong>Totaal: €{berekenTotaal(order).toFixed(2)}</strong>
                     </p>
                 </div>

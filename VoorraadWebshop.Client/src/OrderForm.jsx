@@ -73,7 +73,7 @@ function OrderForm({ onOrderGeplaatst }) {
         <form onSubmit={handleSubmit}>
             <h2>Nieuwe order plaatsen</h2>
 
-            <div>
+            <div className="veld-groep">
                 <label>Klant:</label>
                 <select value={klantId} onChange={(e) => setKlantId(e.target.value)} required>
                     <option value="">-- Kies een klant --</option>
@@ -87,7 +87,7 @@ function OrderForm({ onOrderGeplaatst }) {
 
             <h3>Producten</h3>
             {orderRegels.map((regel, index) => (
-                <div key={index}>
+                <div key={index} className="order-regel">
                     <select
                         value={regel.productId}
                         onChange={(e) => updateOrderRegel(index, 'productId', e.target.value)}
@@ -110,25 +110,23 @@ function OrderForm({ onOrderGeplaatst }) {
                     />
 
                     {orderRegels.length > 1 && (
-                        <button type="button" onClick={() => verwijderRegel(index)}>
-                            Verwijder
+                        <button type="button" className="btn btn-danger" onClick={() => verwijderRegel(index)}>
+                            ×
                         </button>
                     )}
                 </div>
             ))}
 
-            <button type="button" onClick={voegRegelToe}>
+            <button type="button" className="btn-tekst" onClick={voegRegelToe}>
                 + Nog een product toevoegen
             </button>
 
-            {foutmelding && <p style={{ color: 'red' }}>{foutmelding}</p>}
-            {succesmelding && <p style={{ color: 'green' }}>{succesmelding}</p>}
+            {foutmelding && <p className="foutmelding">{foutmelding}</p>}
+            {succesmelding && <p className="succesmelding">{succesmelding}</p>}
 
-            <div>
-                <button type="submit" disabled={versturen}>
-                    {versturen ? 'Bezig...' : 'Order plaatsen'}
-                </button>
-            </div>
+            <button className="btn btn-primary" type="submit" disabled={versturen}>
+                {versturen ? 'Bezig...' : 'Order plaatsen'}
+            </button>
         </form>
     );
 }

@@ -69,4 +69,16 @@ public class OrderService : IOrderService
         await _orderRepository.AddAsync(order);
         return order;
     }
+
+    public async Task UpdateStatusAsync(int orderId, OrderStatus nieuweStatus)
+    {
+        var order = await _orderRepository.GetByIdAsync(orderId);
+        if (order == null)
+        {
+            throw new ArgumentException($"Order met ID {orderId} bestaat niet.");
+        }
+
+        order.Status = nieuweStatus;
+        await _orderRepository.UpdateAsync(order);
+    }
 }

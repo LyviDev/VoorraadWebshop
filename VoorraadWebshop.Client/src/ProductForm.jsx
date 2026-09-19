@@ -74,7 +74,7 @@ function ProductForm({ onProductToegevoegd }) {
         <form onSubmit={handleSubmit}>
             <h2>Nieuw product toevoegen</h2>
 
-            <div>
+            <div className="veld-groep">
                 <label>Type product:</label>
                 <select value={type} onChange={(e) => setType(e.target.value)}>
                     <option value="fysiek">Fysiek</option>
@@ -82,53 +82,53 @@ function ProductForm({ onProductToegevoegd }) {
                 </select>
             </div>
 
-            <div>
+            <div className="veld-groep">
                 <label>Naam:</label>
                 <input value={naam} onChange={(e) => setNaam(e.target.value)} required />
             </div>
 
-            <div>
+            <div className="veld-groep">
                 <label>Beschrijving:</label>
                 <input value={beschrijving} onChange={(e) => setBeschrijving(e.target.value)} required />
             </div>
 
-            <div>
+            <div className="veld-groep">
                 <label>Prijs:</label>
                 <input type="number" step="0.01" min="0" value={prijs} onChange={(e) => setPrijs(e.target.value)} required />
             </div>
 
-            <div>
+            <div className="veld-groep">
                 <label>Categorie ID:</label>
                 <input type="number" min="1" value={categorieId} onChange={(e) => setCategorieId(e.target.value)} required />
             </div>
 
             {type === 'fysiek' ? (
                 <>
-                    <div>
+                    <div className="veld-groep">
                         <label>Gewicht (kg):</label>
                         <input type="number" step="0.1" min="0" value={gewichtInKg} onChange={(e) => setGewichtInKg(e.target.value)} required />
                     </div>
-                    <div>
+                    <div className="veld-groep">
                         <label>Voorraad:</label>
                         <input type="number" min="0" value={voorraadAantal} onChange={(e) => setVoorraadAantal(e.target.value)} required />
                     </div>
                 </>
             ) : (
                 <>
-                    <div>
+                    <div className="veld-groep">
                         <label>Downloadlink:</label>
                         <input type="url" value={downloadLink} onChange={(e) => setDownloadLink(e.target.value)} required />
                     </div>
-                    <div>
+                    <div className="veld-groep">
                         <label>Bestandsgrootte (MB):</label>
                         <input type="number" min="0" value={bestandsGrootteInMb} onChange={(e) => setBestandsGrootteInMb(e.target.value)} required />
                     </div>
                 </>
             )}
 
-            {foutmelding && <p style={{ color: 'red' }}>{foutmelding}</p>}
+            {foutmelding && <p className="foutmelding">{foutmelding}</p>}
 
-            <button type="submit" disabled={versturen}>
+            <button className="btn btn-primary" type="submit" disabled={versturen}>
                 {versturen ? 'Bezig...' : 'Product toevoegen'}
             </button>
         </form>
