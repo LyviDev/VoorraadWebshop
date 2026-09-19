@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import ProductForm from './ProductForm';
 import OrderForm from './OrderForm';
 import OrdersOverzicht from './OrdersOverzicht';
+import KlantenOverzicht from './KlantenOverzicht';
 import './App.css';
 
 function App() {
@@ -9,6 +10,7 @@ function App() {
   const [laden, setLaden] = useState(true);
   const [foutmelding, setFoutmelding] = useState(null);
   const [orderVernieuwTrigger, setOrderVernieuwTrigger] = useState(0);
+  const [klantVernieuwTrigger, setKlantVernieuwTrigger] = useState(0);
 
   function haalProductenOp() {
     setLaden(true);
@@ -29,6 +31,23 @@ function App() {
       });
   }
 
+  function verwijderProduct(id) {
+    if (!window.confirm('Weet je zeker dat je dit product wilt verwijderen?')) {
+      return;
+    }
+
+    fetch(`http://localhost:5070/api/products/${id}`, {
+      method: 'DELETE',
+    })
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error('Product kon niet worden verwijderd.');
+        }
+        haalProductenOp();
+      })
+      .catch((error) => setFoutmelding(error.message));
+  }
+
   function verversAlles() {
     haalProductenOp();
     setOrderVernieuwTrigger((prev) => prev + 1);
@@ -45,15 +64,18 @@ function App() {
       <ProductForm onProductToegevoegd={haalProductenOp} />
 
       <OrderForm onOrderGeplaatst={verversAlles} />
+      <KlantenOverzicht
+        vernieuwTrigger={klantVernieuwTrigger}
+        onKlantVerwijderd={() => setKlantVernieuwTrigger((prev) => prev + 1)}
+      />
 
       <h2>Producten</h2>
-      {laden && <p>Producten laden...</p>}
-      {foutmelding && <p>Fout: {foutmelding}</p>}
       {!laden && !foutmelding && (
         <ul>
           {producten.map((product) => (
             <li key={product.id}>
-              {product.naam} — €{product.prijs.toFixed(2)}
+              {product.naam} — €{product.prijs.toFixed(2)}{' '}
+              <button onClick={() => verwijderProduct(product.id)}>Verwijder</button>
             </li>
           ))}
         </ul>
