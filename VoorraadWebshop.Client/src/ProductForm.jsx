@@ -84,44 +84,44 @@ function ProductForm({ onProductToegevoegd }) {
 
             <div className="veld-groep">
                 <label>Naam:</label>
-                <input value={naam} onChange={(e) => setNaam(e.target.value)} required />
+                <input value={naam} onChange={(e) => setNaam(e.target.value)} placeholder="Bijv. Koffiebonen 1kg" required />
             </div>
 
             <div className="veld-groep">
                 <label>Beschrijving:</label>
-                <input value={beschrijving} onChange={(e) => setBeschrijving(e.target.value)} required />
+                <input value={beschrijving} onChange={(e) => setBeschrijving(e.target.value)} placeholder="Bijv. Donkere branding, biologisch" required />
             </div>
 
             <div className="veld-groep">
                 <label>Prijs:</label>
-                <input type="number" step="0.01" min="0" value={prijs} onChange={(e) => setPrijs(e.target.value)} required />
+                <input type="number" step="0.01" min="0" value={prijs} onChange={(e) => setPrijs(e.target.value)} placeholder="Bijv. 12.50" required />
             </div>
 
             <div className="veld-groep">
                 <label>Categorie ID:</label>
-                <input type="number" min="1" value={categorieId} onChange={(e) => setCategorieId(e.target.value)} required />
+                <input type="number" min="1" value={categorieId} onChange={(e) => setCategorieId(e.target.value)} placeholder="Bijv. 1" required />
             </div>
 
             {type === 'fysiek' ? (
                 <>
                     <div className="veld-groep">
                         <label>Gewicht (kg):</label>
-                        <input type="number" step="0.1" min="0" value={gewichtInKg} onChange={(e) => setGewichtInKg(e.target.value)} required />
+                        <input type="number" step="0.1" min="0" value={gewichtInKg} onChange={(e) => setGewichtInKg(e.target.value)} placeholder="Bijv. 1.0" required />
                     </div>
                     <div className="veld-groep">
                         <label>Voorraad:</label>
-                        <input type="number" min="0" value={voorraadAantal} onChange={(e) => setVoorraadAantal(e.target.value)} required />
+                        <input type="number" min="0" value={voorraadAantal} onChange={(e) => setVoorraadAantal(e.target.value)} placeholder="Bijv. 50" required />
                     </div>
                 </>
             ) : (
                 <>
                     <div className="veld-groep">
                         <label>Downloadlink:</label>
-                        <input type="url" value={downloadLink} onChange={(e) => setDownloadLink(e.target.value)} required />
+                        <input type="url" value={downloadLink} onChange={(e) => setDownloadLink(e.target.value)} placeholder="https://voorbeeld.nl/bestand.pdf" required />
                     </div>
                     <div className="veld-groep">
                         <label>Bestandsgrootte (MB):</label>
-                        <input type="number" min="0" value={bestandsGrootteInMb} onChange={(e) => setBestandsGrootteInMb(e.target.value)} required />
+                        <input type="number" min="0" value={bestandsGrootteInMb} onChange={(e) => setBestandsGrootteInMb(e.target.value)} placeholder="Bijv. 15" required />
                     </div>
                 </>
             )}

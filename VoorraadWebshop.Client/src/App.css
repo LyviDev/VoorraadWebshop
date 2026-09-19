@@ -291,3 +291,7 @@ html {
   text-align: right;
   margin: 12px 0 0;
 }
+
+.veld-groep input::placeholder {
+  color: #a8a094;
+}
